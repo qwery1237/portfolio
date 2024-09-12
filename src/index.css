@@ -105,11 +105,15 @@ section {
   display: block;
 }
 /* HTML5 hidden-attribute fix for newer browsers */
+* {
+  box-sizing: border-box;
+}
 *[hidden] {
   display: none;
 }
 body {
   line-height: 1;
+  width: 100vw;
 }
 a {
   text-decoration: none;
