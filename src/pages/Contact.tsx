@@ -19,10 +19,12 @@ const Underline = styled.div`
   margin-top: 8px;
 `;
 const Form = styled.form`
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
+  margin-top: 80px;
   border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: end;
   & > * {
     background-color: #171717;
   }
@@ -33,14 +35,39 @@ const Input = styled.input`
   padding: 10px;
 `;
 
-const TextArea = styled.input`
-  width: 100%;
+const TextArea = styled.textarea`
+  border: none;
+  width: 500px;
+  height: 150px;
+  max-width: 100vw;
+  min-width: 350px;
+  min-height: 100px;
   padding: 10px;
+  color: white;
+  &:focus {
+    border: none;
+    outline: none;
+  }
+  @media (max-width: 500px) {
+    width: 80vw;
+    min-width: 80vw;
+  }
 `;
 
 const SubmitButton = styled.button`
   padding: 10px 20px;
   cursor: pointer;
+  margin-bottom: 80px;
+  background-color: transparent;
+  border: solid 2px white;
+  width: 150px;
+  text-transform: uppercase;
+  margin-top: 2px;
+  transition: background-color 0.5s, border-color 0.5s;
+  &:hover {
+    border-color: ${(props) => props.theme.red};
+    background-color: ${(props) => props.theme.red};
+  }
 `;
 export default function Contact() {
   const { register } = useForm();

@@ -22,25 +22,71 @@ const ProfileWrapper = styled.div`
   margin-top: 80px;
   width: 100%;
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
+`;
+const FirstLine = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 80px;
+
+  @media (max-width: 650px) {
+    flex-direction: column;
+    gap: 36px;
+  }
+`;
+const Right = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 36px;
 `;
 const Photo = styled.img`
   width: 260px;
   height: 340px;
 `;
-const Intro = styled.div``;
-const Info = styled.div``;
+const Intro = styled.div`
+  width: 300px;
+  text-align: center;
+`;
+const Techs = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+`;
+const Tech = styled.img`
+  width: 100px;
+`;
+const Info = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 80px;
+  margin-bottom: 80px;
+  @media (max-width: 650px) {
+    flex-direction: column;
+    align-items: center;
+    margin-top: 36px;
+    gap: 36px;
+  }
+`;
 const InfoItem = styled.div`
+  width: 300px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
+  @media (max-width: 950px) {
+    font-size: 14px;
+  }
+  @media (max-width: 650px) {
+    font-size: 16px;
+  }
 `;
 const HexWrapper = styled.div`
   display: flex;
   position: relative;
 `;
 const Hexagon = styled(MdHexagon)`
-  color: ${(props) => props.theme.blue};
+  color: ${(props) => props.theme.red};
   font-size: 100px;
 `;
 const Icon = styled.div`
@@ -57,25 +103,38 @@ const Icon = styled.div`
 const Label = styled.div`
   font-weight: 600;
   font-size: 24px;
+  margin-top: 12px;
 `;
-const Detail = styled.div``;
-const Techs = styled.div``;
-const Tech = styled.img`
-  width: 100px;
+const Detail = styled.div`
+  margin-top: 12px;
 `;
+
 export default function About() {
   return (
     <Wrapper>
       <Title>ABOUT</Title>
       <Underline />
       <ProfileWrapper>
-        <Photo src='profile.JPG' />
-        <Intro>
-          I'm a Front-End Developer based in Calgary, freshly graduated and
-          ready to dive into the world of web development. I’m passionate about
-          learning new things and using that knowledge to create error-free and
-          user-friendly solutions.
-        </Intro>
+        <FirstLine>
+          <Photo src='profile.JPG' />
+          <Right>
+            <Intro>
+              I'm a Front-End Developer based in Calgary, freshly graduated and
+              ready to dive into the world of web development.
+              <br /> I’m passionate about learning new things and using that
+              knowledge to create error-free and user-friendly solutions.
+            </Intro>
+
+            <Techs>
+              <Tech src='html.png' />
+              <Tech src='css.png' />
+              <Tech src='javascript.png' />
+              <Tech src='typescript.png' />
+              <Tech src='react.png' />
+              <Tech src='figma.png' />
+            </Techs>
+          </Right>
+        </FirstLine>
         <Info>
           <InfoItem>
             <HexWrapper>
@@ -99,8 +158,8 @@ export default function About() {
             </HexWrapper>
             <Label>Solver</Label>
             <Detail>
-              Challenges are seen as hidden opportunities, and complex problems
-              are solved with smart and effective solutions.
+              Challenges are seen as opportunities, and complex problems are
+              solved with smart and effective solutions.
             </Detail>
           </InfoItem>
           <InfoItem>
@@ -117,14 +176,6 @@ export default function About() {
             </Detail>
           </InfoItem>
         </Info>
-        <Techs>
-          <Tech src='html.png' />
-          <Tech src='css.png' />
-          <Tech src='javascript.png' />
-          <Tech src='typescript.png' />
-          <Tech src='react.png' />
-          <Tech src='figma.png' />
-        </Techs>
       </ProfileWrapper>
     </Wrapper>
   );

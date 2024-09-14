@@ -18,11 +18,18 @@ const Greeting = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 18px;
+  @media (max-width: 550px) {
+    gap: calc(18 * 100vw / 550);
+  }
 `;
 const Line = styled.div`
-  font-size: 32pt;
-  line-height: 36pt;
+  font-size: 42px;
+  line-height: 48px;
   text-align: center;
+  @media (max-width: 550px) {
+    font-size: calc(42 * 100vw / 550);
+    line-height: calc(48 * 100vw / 550);
+  }
 `;
 const Name = styled.span`
   color: ${(props) => props.theme.blue};
@@ -37,9 +44,15 @@ const ViewWork = styled.button`
   width: 200px;
   border: solid 2px white;
   cursor: pointer;
-  transition: all 0.5s;
+  transition: background-color 0.5s;
   &:hover {
     background-color: ${(props) => props.theme.red};
+  }
+  @media (max-width: 550px) {
+    padding: calc(12 * 100vw / 550);
+    font-size: calc(20 * 100vw / 550);
+    width: calc(200 * 100vw / 550);
+    border-width: calc(2 * 100vw / 550);
   }
 `;
 export default function Landing() {

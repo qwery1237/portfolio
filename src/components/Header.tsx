@@ -5,24 +5,27 @@ import {
   useScroll,
 } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import { GiHamburgerMenu } from 'react-icons/gi';
 import styled from 'styled-components';
 
 const Wrapper = styled(motion.div)`
   display: flex;
-  align-items: center;
+  flex-direction: column;
   width: 100%;
-  height: 72px;
   position: fixed;
   z-index: 2;
   box-shadow: none;
+  padding: 21.6px 40px;
 `;
 const NavWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `;
 const Nav = styled.div`
   display: flex;
+  gap: 24px;
   text-transform: uppercase;
 `;
 const NavItem = styled(motion.div)`
@@ -31,6 +34,22 @@ const NavItem = styled(motion.div)`
 `;
 const Title = styled(NavItem)`
   font-size: 24px;
+`;
+const DropdownNav = styled.div`
+  margin-top: 21.6px;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+const MenuTrigger = styled(motion.button)`
+  display: flex;
+  align-items: center;
+  font-size: 24px;
+  cursor: pointer;
+  &:hover {
+    color: ${(props) => props.theme.red};
+  }
 `;
 const headerVariant = {
   top: {
@@ -47,15 +66,17 @@ const hoverVariant = {
     color: headerState === 'top' ? '#9E9E7E' : '#444649',
   }),
   hover: (headerState: 'top' | 'scroll') => ({
-    color: headerState === 'top' ? '#ffffff' : '#800020',
+    color: headerState === 'top' ? '#ffffff' : '#F76566',
   }),
 };
 
 export default function Header() {
   const { scrollY } = useScroll();
   const [width, setWidth] = useState(window.innerWidth);
+  const [showNav, setShowNav] = useState(false);
   const [headerState, setHeaderState] = useState('top');
   const headerAnimation = useAnimation();
+  const toggleNav = () => setShowNav((prev) => !prev);
   const onResize = () => {
     const crrWidth = window.innerWidth;
     setWidth(crrWidth);
@@ -122,9 +143,45 @@ export default function Header() {
             </NavItem>
           </Nav>
         ) : (
-          <div>menu</div>
+          <MenuTrigger
+            custom={headerState}
+            variants={hoverVariant}
+            whileHover='hover'
+            animate='animate'
+            onClick={toggleNav}
+          >
+            <GiHamburgerMenu />
+          </MenuTrigger>
         )}
       </NavWrapper>
+      {showNav ? (
+        <DropdownNav>
+          <NavItem
+            custom={headerState}
+            variants={hoverVariant}
+            whileHover='hover'
+            animate='animate'
+          >
+            About
+          </NavItem>
+          <NavItem
+            custom={headerState}
+            variants={hoverVariant}
+            whileHover='hover'
+            animate='animate'
+          >
+            Journey
+          </NavItem>
+          <NavItem
+            custom={headerState}
+            variants={hoverVariant}
+            whileHover='hover'
+            animate='animate'
+          >
+            Contact
+          </NavItem>
+        </DropdownNav>
+      ) : null}
     </Wrapper>
   );
 }
