@@ -1,6 +1,10 @@
+import { useScroll } from 'framer-motion';
+import { forwardRef, RefObject } from 'react';
 import { IoMdArrowDown } from 'react-icons/io';
 import styled from 'styled-components';
-
+interface ILandingProps {
+  aboutRef: RefObject<HTMLDivElement>;
+}
 const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
@@ -55,20 +59,30 @@ const ViewWork = styled.button`
     border-width: calc(2 * 100vw / 550);
   }
 `;
-export default function Landing() {
-  return (
-    <Wrapper>
-      <Greeting>
-        <Line>
-          Hello, I'm
-          <Name> Jinsoo Son</Name>,
-          <br />
-          I'm a front-end developer.
-        </Line>
-        <ViewWork>
-          View my work <IoMdArrowDown />
-        </ViewWork>
-      </Greeting>
-    </Wrapper>
-  );
-}
+const Landing = forwardRef<HTMLDivElement, ILandingProps>(
+  ({ aboutRef }, ref) => {
+    const { scrollY } = useScroll();
+    const scrollToAbout = () => {
+      if (aboutRef.current == null) return;
+      const top =
+        aboutRef.current.getBoundingClientRect().top + scrollY.get() - 71.98;
+      window.scrollTo({ top, behavior: 'smooth' });
+    };
+    return (
+      <Wrapper ref={ref}>
+        <Greeting>
+          <Line>
+            Hello, I'm
+            <Name> Jinsoo Son</Name>,
+            <br />
+            I'm a front-end developer.
+          </Line>
+          <ViewWork onClick={scrollToAbout}>
+            View my work <IoMdArrowDown />
+          </ViewWork>
+        </Greeting>
+      </Wrapper>
+    );
+  }
+);
+export default Landing;

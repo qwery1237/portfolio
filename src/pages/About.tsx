@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import { FaCrosshairs } from 'react-icons/fa';
 import { GiBookmarklet, GiPuzzle } from 'react-icons/gi';
 import { MdHexagon } from 'react-icons/md';
@@ -109,9 +110,9 @@ const Detail = styled.div`
   margin-top: 12px;
 `;
 
-export default function About() {
+const About = forwardRef<HTMLDivElement>((_, ref) => {
   return (
-    <Wrapper>
+    <Wrapper ref={ref}>
       <Title>ABOUT</Title>
       <Underline />
       <ProfileWrapper>
@@ -179,4 +180,5 @@ export default function About() {
       </ProfileWrapper>
     </Wrapper>
   );
-}
+});
+export default About;

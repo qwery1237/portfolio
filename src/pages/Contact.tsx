@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 
@@ -69,11 +70,11 @@ const SubmitButton = styled.button`
     background-color: ${(props) => props.theme.red};
   }
 `;
-export default function Contact() {
+const Contact = forwardRef<HTMLDivElement>((_, ref) => {
   const { register } = useForm();
 
   return (
-    <Wrapper>
+    <Wrapper ref={ref}>
       <Title>CONTACT</Title>
       <Underline />
       <Form>
@@ -100,4 +101,5 @@ export default function Contact() {
       </Form>
     </Wrapper>
   );
-}
+});
+export default Contact;

@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import { FiExternalLink, FiX } from 'react-icons/fi';
 import styled from 'styled-components';
 
@@ -163,9 +164,9 @@ const CloseBtn = styled(FiX)`
   color: ${(props) => props.theme.red};
   cursor: pointer;
 `;
-export default function Project() {
+const Project = forwardRef<HTMLDivElement>((_, ref) => {
   return (
-    <Wrapper>
+    <Wrapper ref={ref}>
       <Title>JOURNEY</Title>
       <Underline />
       <Projects>
@@ -368,4 +369,5 @@ export default function Project() {
       </Modals>
     </Wrapper>
   );
-}
+});
+export default Project;

@@ -4,9 +4,15 @@ import {
   useMotionValueEvent,
   useScroll,
 } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { RefObject, useEffect, useRef, useState } from 'react';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import styled from 'styled-components';
+interface IHeaderProps {
+  landingRef: RefObject<HTMLDivElement>;
+  aboutRef: RefObject<HTMLDivElement>;
+  projectRef: RefObject<HTMLDivElement>;
+  contactRef: RefObject<HTMLDivElement>;
+}
 
 const Wrapper = styled(motion.div)`
   display: flex;
@@ -35,12 +41,10 @@ const NavItem = styled(motion.div)`
 const Title = styled(NavItem)`
   font-size: 24px;
 `;
-const DropdownNav = styled.div`
-  margin-top: 21.6px;
-  padding: 20px 0;
+const DropdownNav = styled(motion.div)`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  overflow: hidden;
 `;
 const MenuTrigger = styled(motion.button)`
   display: flex;
@@ -63,23 +67,56 @@ const headerVariant = {
 };
 const hoverVariant = {
   animate: (headerState: 'top' | 'scroll') => ({
+    pointerEvents: 'all' as const,
     color: headerState === 'top' ? '#9E9E7E' : '#444649',
   }),
   hover: (headerState: 'top' | 'scroll') => ({
+    pointerEvents: 'all' as const,
     color: headerState === 'top' ? '#ffffff' : '#F76566',
   }),
+  current: (headerState: 'top' | 'scroll') => ({
+    color: headerState === 'top' ? '#ffffff' : '#F76566',
+    pointerEvents: 'none' as const,
+  }),
 };
-
-export default function Header() {
+const dropDownNavVariant = {
+  show: {
+    height: '120px',
+    padding: '20px 0',
+    gap: '20px',
+    marginTop: '21.6px',
+  },
+  hide: { height: 0, padding: 0, marginTop: 0 },
+};
+export default function Header({
+  landingRef,
+  aboutRef,
+  projectRef,
+  contactRef,
+}: IHeaderProps) {
+  const headerHeight = 71.98;
   const { scrollY } = useScroll();
   const [width, setWidth] = useState(window.innerWidth);
   const [showNav, setShowNav] = useState(false);
   const [headerState, setHeaderState] = useState('top');
+  const [currentSection, setCurrentSection] =
+    useState<RefObject<HTMLDivElement>>(landingRef);
   const headerAnimation = useAnimation();
+  const headerRef = useRef<HTMLDivElement>(null);
+
   const toggleNav = () => setShowNav((prev) => !prev);
+  const scrollToSection = (sectionRef: RefObject<HTMLDivElement>) => {
+    if (sectionRef.current === null) return;
+    const top =
+      sectionRef.current.getBoundingClientRect().top +
+      scrollY.get() -
+      headerHeight;
+    window.scrollTo({ top, behavior: 'smooth' });
+  };
   const onResize = () => {
     const crrWidth = window.innerWidth;
     setWidth(crrWidth);
+
     const crrY = scrollY.get();
     if (crrY !== 0) return;
     if (crrWidth >= 1000) {
@@ -90,7 +127,29 @@ export default function Header() {
     setHeaderState('scroll');
     headerAnimation.start('scroll');
   };
+  const closeNav = (event: MouseEvent) => {
+    if (!headerRef.current) return;
+
+    if (headerRef.current.contains(event.target as Node)) return;
+
+    setShowNav(false);
+  };
+  const getCurrentPage = () => {
+    const crrPage = [landingRef, aboutRef, projectRef, contactRef].filter(
+      (ref) => {
+        if (ref.current === null) return false;
+        const { top, bottom } = ref.current.getBoundingClientRect();
+        return (
+          top <= window.innerHeight - headerHeight &&
+          bottom > headerHeight + 0.2
+        );
+      }
+    );
+
+    setCurrentSection(crrPage[0]);
+  };
   useMotionValueEvent(scrollY, 'change', (crrY) => {
+    getCurrentPage();
     if (crrY === 0 && window.innerWidth >= 1000) {
       setHeaderState('top');
       headerAnimation.start('top');
@@ -100,18 +159,36 @@ export default function Header() {
     headerAnimation.start('scroll');
   });
   useEffect(() => {
+    if (scrollY.get() === 0 && window.innerWidth >= 1000) {
+      setHeaderState('top');
+      headerAnimation.start('top');
+    } else {
+      setHeaderState('scroll');
+      headerAnimation.start('scroll');
+    }
     window.addEventListener('resize', onResize);
-
     return () => window.removeEventListener('resize', onResize);
   }, []);
+  useEffect(() => {
+    if (!showNav) return;
+
+    window.addEventListener('click', closeNav);
+    return () => window.removeEventListener('click', closeNav);
+  }, [showNav]);
+  useEffect(() => {
+    if (width >= 1000) {
+      setShowNav(false);
+    }
+  }, [width]);
   return (
-    <Wrapper variants={headerVariant} animate={headerAnimation} initial='top'>
+    <Wrapper ref={headerRef} variants={headerVariant} animate={headerAnimation}>
       <NavWrapper>
         <Title
           custom={headerState}
           variants={hoverVariant}
           whileHover='hover'
-          animate='animate'
+          animate={currentSection === landingRef ? 'current' : 'animate'}
+          onClick={() => scrollToSection(landingRef)}
         >
           Jin's Portfolio
         </Title>
@@ -121,7 +198,8 @@ export default function Header() {
               custom={headerState}
               variants={hoverVariant}
               whileHover='hover'
-              animate='animate'
+              animate={currentSection === aboutRef ? 'current' : 'animate'}
+              onClick={() => scrollToSection(aboutRef)}
             >
               About
             </NavItem>
@@ -129,7 +207,8 @@ export default function Header() {
               custom={headerState}
               variants={hoverVariant}
               whileHover='hover'
-              animate='animate'
+              animate={currentSection === projectRef ? 'current' : 'animate'}
+              onClick={() => scrollToSection(projectRef)}
             >
               Journey
             </NavItem>
@@ -137,7 +216,8 @@ export default function Header() {
               custom={headerState}
               variants={hoverVariant}
               whileHover='hover'
-              animate='animate'
+              animate={currentSection === contactRef ? 'current' : 'animate'}
+              onClick={() => scrollToSection(contactRef)}
             >
               Contact
             </NavItem>
@@ -154,34 +234,42 @@ export default function Header() {
           </MenuTrigger>
         )}
       </NavWrapper>
-      {showNav ? (
-        <DropdownNav>
-          <NavItem
-            custom={headerState}
-            variants={hoverVariant}
-            whileHover='hover'
-            animate='animate'
-          >
-            About
-          </NavItem>
-          <NavItem
-            custom={headerState}
-            variants={hoverVariant}
-            whileHover='hover'
-            animate='animate'
-          >
-            Journey
-          </NavItem>
-          <NavItem
-            custom={headerState}
-            variants={hoverVariant}
-            whileHover='hover'
-            animate='animate'
-          >
-            Contact
-          </NavItem>
-        </DropdownNav>
-      ) : null}
+
+      {/* {showNav && width < 1000 ? ( */}
+      <DropdownNav
+        variants={dropDownNavVariant}
+        animate={showNav ? 'show' : 'hide'}
+        initial='hide'
+      >
+        <NavItem
+          custom={headerState}
+          variants={hoverVariant}
+          whileHover='hover'
+          animate={currentSection === aboutRef ? 'current' : 'animate'}
+          onClick={() => scrollToSection(aboutRef)}
+        >
+          About
+        </NavItem>
+        <NavItem
+          custom={headerState}
+          variants={hoverVariant}
+          whileHover='hover'
+          animate={currentSection === projectRef ? 'current' : 'animate'}
+          onClick={() => scrollToSection(projectRef)}
+        >
+          Journey
+        </NavItem>
+        <NavItem
+          custom={headerState}
+          variants={hoverVariant}
+          whileHover='hover'
+          animate={currentSection === contactRef ? 'current' : 'animate'}
+          onClick={() => scrollToSection(contactRef)}
+        >
+          Contact
+        </NavItem>
+      </DropdownNav>
+      {/* ) : null} */}
     </Wrapper>
   );
 }
