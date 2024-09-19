@@ -65,7 +65,10 @@ const Landing = forwardRef<HTMLDivElement, ILandingProps>(
     const scrollToAbout = () => {
       if (aboutRef.current == null) return;
       const top =
-        aboutRef.current.getBoundingClientRect().top + scrollY.get() - 71.98;
+        aboutRef.current.getBoundingClientRect().top +
+        scrollY.get() -
+        71.98 +
+        2;
       window.scrollTo({ top, behavior: 'smooth' });
     };
     return (

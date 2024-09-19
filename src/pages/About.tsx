@@ -1,4 +1,5 @@
-import { forwardRef } from 'react';
+import { motion, useAnimation } from 'framer-motion';
+import { forwardRef, useEffect, useRef } from 'react';
 import { FaCrosshairs } from 'react-icons/fa';
 import { GiBookmarklet, GiPuzzle } from 'react-icons/gi';
 import { MdHexagon } from 'react-icons/md';
@@ -10,11 +11,11 @@ const Wrapper = styled.div`
   align-items: center;
   padding-top: 80px;
 `;
-const Title = styled.div`
+const Title = styled(motion.div)`
   font-size: 40px;
   font-weight: 600;
 `;
-const Underline = styled.div`
+const Underline = styled(motion.div)`
   width: 70px;
   border-bottom: 3px solid ${(props) => props.theme.black};
   margin-top: 8px;
@@ -36,13 +37,13 @@ const FirstLine = styled.div`
     gap: 36px;
   }
 `;
-const Right = styled.div`
+const Right = styled(motion.div)`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 36px;
 `;
-const Photo = styled.img`
+const Photo = styled(motion.img)`
   width: 260px;
   height: 340px;
 `;
@@ -69,7 +70,7 @@ const Info = styled.div`
     gap: 36px;
   }
 `;
-const InfoItem = styled.div`
+const InfoItem = styled(motion.div)`
   width: 300px;
   display: flex;
   flex-direction: column;
@@ -82,7 +83,7 @@ const InfoItem = styled.div`
     font-size: 16px;
   }
 `;
-const HexWrapper = styled.div`
+const HexWrapper = styled(motion.div)`
   display: flex;
   position: relative;
 `;
@@ -109,24 +110,137 @@ const Label = styled.div`
 const Detail = styled.div`
   margin-top: 12px;
 `;
-
+const titleVariants = {
+  initial: { opacity: 0, x: -300 },
+  enter: { opacity: 1, x: 0, transition: { type: 'tween', duration: 0.45 } },
+  exit: { opacity: 0, x: 300 },
+};
+const underlineVariants = {
+  initial: { opacity: 0, x: -200 },
+  enter: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      delay: 0.3,
+      type: 'tween',
+      duration: 0.3,
+    },
+  },
+  exit: { opacity: 0, x: 200 },
+};
+const photoVariants = {
+  initial: { opacity: 0, x: -300 },
+  enter: {
+    opacity: 1,
+    x: 0,
+    transition: { type: 'tween', duration: 0.45, delay: 0.5 },
+  },
+  exit: { opacity: 0, x: -300 },
+};
+const rightBoxVariants = {
+  initial: { opacity: 0, x: 300 },
+  enter: {
+    opacity: 1,
+    x: 0,
+    transition: { type: 'tween', duration: 0.45, delay: 0.5 },
+  },
+  exit: { opacity: 0, x: 300 },
+};
+const infoVariants = {
+  initial: { opacity: 0 },
+  enter: {
+    opacity: 1,
+  },
+  exit: { opacity: 0 },
+};
+const logoVariants = {
+  initial: { scale: 0.2 },
+  enter: {
+    scale: 1,
+  },
+  exit: { opacity: 0 },
+};
 const About = forwardRef<HTMLDivElement>((_, ref) => {
+  const photoRef = useRef<HTMLImageElement>(null);
+  const techsRef = useRef<HTMLDivElement>(null);
+  const infoRef = useRef<HTMLDivElement>(null);
+  const titleAnimation = useAnimation();
+  const profileAnimation = useAnimation();
+  const infoAnimation = useAnimation();
+  useEffect(() => {
+    const currentPhotoRef = photoRef.current;
+    const currentTechsRef = techsRef.current;
+    const currentInfoRef = infoRef.current;
+    if (!currentPhotoRef || !currentTechsRef || !currentInfoRef) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.target === currentPhotoRef) {
+            if (entry.intersectionRatio >= 0.1) {
+              titleAnimation.start('enter');
+              return;
+            }
+          }
+          if (entry.target === currentTechsRef) {
+            if (entry.intersectionRatio >= 0.1) {
+              profileAnimation.start('enter');
+              return;
+            }
+          }
+          if (entry.target === currentInfoRef) {
+            if (entry.intersectionRatio >= 0.1) {
+              infoAnimation.start('enter');
+            }
+          }
+        });
+      },
+      { threshold: [0.1] }
+    );
+    observer.observe(currentPhotoRef);
+    observer.observe(currentTechsRef);
+    observer.observe(currentInfoRef);
+    return () => {
+      observer.unobserve(currentPhotoRef);
+      observer.unobserve(currentTechsRef);
+      observer.unobserve(currentInfoRef);
+    };
+  }, []);
   return (
     <Wrapper ref={ref}>
-      <Title>ABOUT</Title>
-      <Underline />
+      <Title
+        variants={titleVariants}
+        animate={titleAnimation}
+        initial='initial'
+      >
+        ABOUT
+      </Title>
+      <Underline
+        variants={underlineVariants}
+        animate={titleAnimation}
+        initial='initial'
+      />
       <ProfileWrapper>
         <FirstLine>
-          <Photo src='profile.JPG' />
-          <Right>
+          <Photo
+            ref={photoRef}
+            src='profile.JPG'
+            variants={photoVariants}
+            animate={profileAnimation}
+            initial='initial'
+          />
+          <Right
+            variants={rightBoxVariants}
+            animate={profileAnimation}
+            initial='initial'
+          >
             <Intro>
               I'm a Front-End Developer based in Calgary, freshly graduated and
-              ready to dive into the world of web development.
+              ready to dive i nto the world of web development.
               <br /> I’m passionate about learning new things and using that
               knowledge to create error-free and user-friendly solutions.
             </Intro>
 
-            <Techs>
+            <Techs ref={techsRef}>
               <Tech src='html.png' />
               <Tech src='css.png' />
               <Tech src='javascript.png' />
@@ -137,21 +251,52 @@ const About = forwardRef<HTMLDivElement>((_, ref) => {
           </Right>
         </FirstLine>
         <Info>
-          <InfoItem>
-            <HexWrapper>
+          <InfoItem
+            variants={infoVariants}
+            initial='initial'
+            animate={infoAnimation}
+            transition={{ type: 'tween', duration: 0.45 }}
+          >
+            <HexWrapper
+              variants={logoVariants}
+              initial='initial'
+              animate={infoAnimation}
+              transition={{
+                type: 'spring',
+                duration: 0.45,
+                bounce: 10,
+                damping: 10,
+              }}
+            >
               <Hexagon />
               <Icon>
                 <FaCrosshairs />
               </Icon>
             </HexWrapper>
             <Label>Precision</Label>
-            <Detail>
+            <Detail ref={infoRef}>
               Every part, from pixels to code, is carefully designed to create
               smooth and perfect user experiences.
             </Detail>
           </InfoItem>
-          <InfoItem>
-            <HexWrapper>
+          <InfoItem
+            variants={infoVariants}
+            initial='initial'
+            animate={infoAnimation}
+            transition={{ type: 'tween', duration: 0.45, delay: 0.3 }}
+          >
+            <HexWrapper
+              variants={logoVariants}
+              initial='initial'
+              animate={infoAnimation}
+              transition={{
+                type: 'spring',
+                duration: 0.45,
+                delay: 0.3,
+                bounce: 10,
+                damping: 10,
+              }}
+            >
               <Hexagon />
               <Icon>
                 <GiPuzzle />
@@ -163,8 +308,24 @@ const About = forwardRef<HTMLDivElement>((_, ref) => {
               solved with smart and effective solutions.
             </Detail>
           </InfoItem>
-          <InfoItem>
-            <HexWrapper>
+          <InfoItem
+            variants={infoVariants}
+            initial='initial'
+            animate={infoAnimation}
+            transition={{ type: 'tween', duration: 0.45, delay: 0.6 }}
+          >
+            <HexWrapper
+              variants={logoVariants}
+              initial='initial'
+              animate={infoAnimation}
+              transition={{
+                type: 'spring',
+                duration: 0.45,
+                delay: 0.6,
+                bounce: 10,
+                damping: 10,
+              }}
+            >
               <Hexagon />
               <Icon>
                 <GiBookmarklet />

@@ -110,7 +110,8 @@ export default function Header({
     const top =
       sectionRef.current.getBoundingClientRect().top +
       scrollY.get() -
-      headerHeight;
+      headerHeight +
+      2;
     window.scrollTo({ top, behavior: 'smooth' });
   };
   const onResize = () => {
@@ -135,6 +136,12 @@ export default function Header({
     setShowNav(false);
   };
   const getCurrentPage = () => {
+    const scrollPosition = window.scrollY + window.innerHeight;
+    const pageHeight = document.documentElement.scrollHeight;
+    if (scrollPosition >= pageHeight) {
+      setCurrentSection(contactRef);
+      return;
+    }
     const crrPage = [landingRef, aboutRef, projectRef, contactRef].filter(
       (ref) => {
         if (ref.current === null) return false;
