@@ -528,7 +528,7 @@ const Project = forwardRef<HTMLDivElement>((_, ref) => {
                 {filter === 'all' || project.createdAt === filter ? (
                   <CardWrapper
                     variants={projectVariants}
-                    custom={shouldAnimate ? 0.45 + 0.15 * i : 0.5 + 0.15 * i}
+                    custom={0.45 + 0.15 * i}
                     initial='initial'
                     animate={shouldAnimate ? projectAnimation : 'enter'}
                     exit='exit'

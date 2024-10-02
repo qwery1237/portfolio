@@ -1,4 +1,5 @@
-import { forwardRef } from 'react';
+import { motion, useAnimation } from 'framer-motion';
+import { forwardRef, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 
@@ -10,16 +11,16 @@ const Wrapper = styled.div`
   color: white;
   background-color: #212121;
 `;
-const Title = styled.div`
+const Title = styled(motion.div)`
   font-size: 40px;
   font-weight: 600;
 `;
-const Underline = styled.div`
+const Underline = styled(motion.div)`
   width: 70px;
   border-bottom: 3px solid white;
   margin-top: 8px;
 `;
-const Form = styled.form`
+const Form = styled(motion.form)`
   margin-top: 80px;
   border-radius: 8px;
   display: flex;
@@ -70,14 +71,83 @@ const SubmitButton = styled.button`
     background-color: ${(props) => props.theme.red};
   }
 `;
+const titleVariants = {
+  initial: { opacity: 0, x: -300 },
+  enter: { opacity: 1, x: 0, transition: { type: 'tween', duration: 0.45 } },
+};
+const underlineVariants = {
+  initial: { opacity: 0, x: -200 },
+  enter: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      delay: 0.3,
+      type: 'tween',
+      duration: 0.3,
+    },
+  },
+};
+const formVariants = {
+  initial: { opacity: 0, scale: 0 },
+  enter: {
+    opacity: 1,
+    scale: 1,
+    transition: { type: 'spring', stiffness: 50, damping: 7 },
+  },
+};
 const Contact = forwardRef<HTMLDivElement>((_, ref) => {
   const { register } = useForm();
 
+  const titleRef = useRef<HTMLDivElement>(null);
+  const formRef = useRef<HTMLButtonElement>(null);
+  const titleAnimation = useAnimation();
+  const formAnimation = useAnimation();
+  useEffect(() => {
+    const currentTitleRef = titleRef.current;
+    const currentFormRef = formRef.current;
+    if (!currentTitleRef || !currentFormRef) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.target === currentTitleRef) {
+            if (entry.intersectionRatio >= 0.1) {
+              titleAnimation.start('enter');
+              return;
+            }
+          }
+          if (entry.target === currentFormRef) {
+            if (entry.intersectionRatio >= 0.1) {
+              formAnimation.start('enter');
+              return;
+            }
+          }
+        });
+      },
+      { threshold: [0.1] }
+    );
+    observer.observe(currentTitleRef);
+    observer.observe(currentFormRef);
+    return () => {
+      observer.unobserve(currentTitleRef);
+      observer.unobserve(currentFormRef);
+    };
+  }, []);
   return (
     <Wrapper ref={ref}>
-      <Title>CONTACT</Title>
-      <Underline />
-      <Form>
+      <Title
+        variants={titleVariants}
+        animate={titleAnimation}
+        initial='initial'
+      >
+        CONTACT
+      </Title>
+      <Underline
+        ref={titleRef}
+        variants={underlineVariants}
+        animate={titleAnimation}
+        initial='initial'
+      />
+      <Form variants={formVariants} animate={formAnimation} initial='initial'>
         <Input
           {...register('name', { required: true })}
           placeholder='Enter your name'
@@ -97,7 +167,9 @@ const Contact = forwardRef<HTMLDivElement>((_, ref) => {
           required
         />
 
-        <SubmitButton type='submit'>Submit</SubmitButton>
+        <SubmitButton ref={formRef} type='submit'>
+          Submit
+        </SubmitButton>
       </Form>
     </Wrapper>
   );
