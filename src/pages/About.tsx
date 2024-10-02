@@ -158,19 +158,20 @@ const About = forwardRef<HTMLDivElement>((_, ref) => {
   const titleRef = useRef<HTMLDivElement>(null);
   const infoRef = useRef<HTMLDivElement>(null);
   const titleAnimation = useAnimation();
-  const profileAnimation = useAnimation();
   const infoAnimation = useAnimation();
   useEffect(() => {
+    const currentWrapperRef = (ref as React.RefObject<HTMLDivElement>).current;
+
     const currentTitleRef = titleRef.current;
     const currentInfoRef = infoRef.current;
-    if (!currentTitleRef || !currentInfoRef) return;
+    if (!currentTitleRef || !currentInfoRef || !currentWrapperRef) return;
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.target === currentTitleRef) {
             if (entry.intersectionRatio >= 0.1) {
               titleAnimation.start('enter');
-              profileAnimation.start('enter');
               return;
             }
           }
@@ -181,13 +182,20 @@ const About = forwardRef<HTMLDivElement>((_, ref) => {
               return;
             }
           }
+          if (entry.target === currentWrapperRef && !entry.isIntersecting) {
+            titleAnimation.start('initial');
+            infoAnimation.start('initial');
+            return;
+          }
         });
       },
       { threshold: [0.1] }
     );
+    observer.observe(currentWrapperRef);
     observer.observe(currentTitleRef);
     observer.observe(currentInfoRef);
     return () => {
+      observer.unobserve(currentWrapperRef);
       observer.unobserve(currentTitleRef);
       observer.unobserve(currentInfoRef);
     };
@@ -211,12 +219,12 @@ const About = forwardRef<HTMLDivElement>((_, ref) => {
           <Photo
             src='profile.JPG'
             variants={photoVariants}
-            animate={profileAnimation}
+            animate={titleAnimation}
             initial='initial'
           />
           <Right
             variants={rightBoxVariants}
-            animate={profileAnimation}
+            animate={titleAnimation}
             initial='initial'
           >
             <Intro>

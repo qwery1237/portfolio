@@ -104,9 +104,10 @@ const Contact = forwardRef<HTMLDivElement>((_, ref) => {
   const titleAnimation = useAnimation();
   const formAnimation = useAnimation();
   useEffect(() => {
+    const currentWrapperRef = (ref as React.RefObject<HTMLDivElement>).current;
     const currentTitleRef = titleRef.current;
     const currentFormRef = formRef.current;
-    if (!currentTitleRef || !currentFormRef) return;
+    if (!currentTitleRef || !currentFormRef || !currentWrapperRef) return;
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -122,13 +123,20 @@ const Contact = forwardRef<HTMLDivElement>((_, ref) => {
               return;
             }
           }
+          if (entry.target === currentWrapperRef && !entry.isIntersecting) {
+            titleAnimation.start('initial');
+            formAnimation.start('initial');
+            return;
+          }
         });
       },
       { threshold: [0.1] }
     );
+    observer.observe(currentWrapperRef);
     observer.observe(currentTitleRef);
     observer.observe(currentFormRef);
     return () => {
+      observer.unobserve(currentWrapperRef);
       observer.unobserve(currentTitleRef);
       observer.unobserve(currentFormRef);
     };

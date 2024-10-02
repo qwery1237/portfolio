@@ -438,9 +438,10 @@ const Project = forwardRef<HTMLDivElement>((_, ref) => {
     setShowModal(false);
   };
   useEffect(() => {
+    const currentWrapperRef = (ref as React.RefObject<HTMLDivElement>).current;
     const currentTitleRef = titleRef.current;
     const currentProjectRef = projectRef.current;
-    if (!currentTitleRef || !currentProjectRef) return;
+    if (!currentTitleRef || !currentProjectRef || !currentWrapperRef) return;
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -458,13 +459,20 @@ const Project = forwardRef<HTMLDivElement>((_, ref) => {
               return;
             }
           }
+          if (entry.target === currentWrapperRef && !entry.isIntersecting) {
+            titleAnimation.start('initial');
+            projectAnimation.start('initial');
+            return;
+          }
         });
       },
       { threshold: [0.1] }
     );
+    observer.observe(currentWrapperRef);
     observer.observe(currentTitleRef);
     observer.observe(currentProjectRef);
     return () => {
+      observer.unobserve(currentWrapperRef);
       observer.unobserve(currentTitleRef);
       observer.unobserve(currentProjectRef);
     };
