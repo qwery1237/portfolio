@@ -22,6 +22,10 @@ const Wrapper = styled(motion.div)`
   z-index: 2;
   box-shadow: none;
   padding: 21.6px 40px;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 `;
 const NavWrapper = styled.div`
   width: 100%;
@@ -33,6 +37,10 @@ const Nav = styled.div`
   display: flex;
   gap: 24px;
   text-transform: uppercase;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 `;
 const NavItem = styled(motion.div)`
   font-weight: 700;
@@ -242,7 +250,6 @@ export default function Header({
         )}
       </NavWrapper>
 
-      {/* {showNav && width < 1000 ? ( */}
       <DropdownNav
         variants={dropDownNavVariant}
         animate={showNav ? 'show' : 'hide'}
@@ -276,7 +283,6 @@ export default function Header({
           Contact
         </NavItem>
       </DropdownNav>
-      {/* ) : null} */}
     </Wrapper>
   );
 }

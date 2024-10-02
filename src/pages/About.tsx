@@ -32,7 +32,7 @@ const FirstLine = styled.div`
   align-items: center;
   gap: 80px;
 
-  @media (max-width: 650px) {
+  @media (max-width: 780px) {
     flex-direction: column;
     gap: 36px;
   }
@@ -63,7 +63,7 @@ const Info = styled.div`
   justify-content: space-evenly;
   margin-top: 80px;
   margin-bottom: 80px;
-  @media (max-width: 650px) {
+  @media (max-width: 780px) {
     flex-direction: column;
     align-items: center;
     margin-top: 36px;
@@ -79,7 +79,7 @@ const InfoItem = styled(motion.div)`
   @media (max-width: 950px) {
     font-size: 14px;
   }
-  @media (max-width: 650px) {
+  @media (max-width: 780px) {
     font-size: 16px;
   }
 `;
@@ -113,7 +113,6 @@ const Detail = styled.div`
 const titleVariants = {
   initial: { opacity: 0, x: -300 },
   enter: { opacity: 1, x: 0, transition: { type: 'tween', duration: 0.45 } },
-  exit: { opacity: 0, x: 300 },
 };
 const underlineVariants = {
   initial: { opacity: 0, x: -200 },
@@ -126,7 +125,6 @@ const underlineVariants = {
       duration: 0.3,
     },
   },
-  exit: { opacity: 0, x: 200 },
 };
 const photoVariants = {
   initial: { opacity: 0, x: -300 },
@@ -135,7 +133,6 @@ const photoVariants = {
     x: 0,
     transition: { type: 'tween', duration: 0.45, delay: 0.5 },
   },
-  exit: { opacity: 0, x: -300 },
 };
 const rightBoxVariants = {
   initial: { opacity: 0, x: 300 },
@@ -144,21 +141,18 @@ const rightBoxVariants = {
     x: 0,
     transition: { type: 'tween', duration: 0.45, delay: 0.5 },
   },
-  exit: { opacity: 0, x: 300 },
 };
 const infoVariants = {
   initial: { opacity: 0 },
   enter: {
     opacity: 1,
   },
-  exit: { opacity: 0 },
 };
 const logoVariants = {
   initial: { scale: 0.2 },
   enter: {
     scale: 1,
   },
-  exit: { opacity: 0 },
 };
 const About = forwardRef<HTMLDivElement>((_, ref) => {
   const photoRef = useRef<HTMLImageElement>(null);
@@ -190,6 +184,7 @@ const About = forwardRef<HTMLDivElement>((_, ref) => {
           if (entry.target === currentInfoRef) {
             if (entry.intersectionRatio >= 0.1) {
               infoAnimation.start('enter');
+              return;
             }
           }
         });

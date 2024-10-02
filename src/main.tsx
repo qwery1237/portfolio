@@ -37,6 +37,12 @@ const GlobalStyles = createGlobalStyle`
     border:none;
     outline: none;
   }
+  a,button {
+    user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  }
   div,span,h1,h2,h3,h4,h5,h6,p{
     cursor:default;
   }
