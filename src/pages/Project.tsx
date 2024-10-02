@@ -125,6 +125,9 @@ const Filter = styled(motion.button)<{ isSelected: boolean }>`
   cursor: pointer;
   padding: 6px 28px;
   ${(props) => (props.isSelected ? 'pointer-events: none;' : '')}
+  @media (max-width: 390px) {
+    padding: calc(6 * 100vw / 390) calc(28 * 100vw / 390);
+  }
 `;
 const Text = styled(motion.div)`
   position: relative;
@@ -586,7 +589,7 @@ const Project = forwardRef<HTMLDivElement>((_, ref) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ type: 'tween', duration: 0.45 }}
+            transition={{ type: 'tween', duration: 0.3 }}
             onClick={closeModal}
           >
             {MODALS.map((modal, i) => (

@@ -20,6 +20,7 @@ const Underline = styled(motion.div)`
   border-bottom: 3px solid white;
   margin-top: 8px;
 `;
+const FormWrapper = styled.div``;
 const Form = styled(motion.form)`
   margin-top: 80px;
   border-radius: 8px;
@@ -142,35 +143,36 @@ const Contact = forwardRef<HTMLDivElement>((_, ref) => {
         CONTACT
       </Title>
       <Underline
-        ref={titleRef}
         variants={underlineVariants}
         animate={titleAnimation}
         initial='initial'
       />
-      <Form variants={formVariants} animate={formAnimation} initial='initial'>
-        <Input
-          {...register('name', { required: true })}
-          placeholder='Enter your name'
-          required
-        />
+      <FormWrapper ref={titleRef}>
+        <Form variants={formVariants} animate={formAnimation} initial='initial'>
+          <Input
+            {...register('name', { required: true })}
+            placeholder='Enter your name'
+            required
+          />
 
-        <Input
-          type='email'
-          {...register('email', { required: true })}
-          placeholder='Enter your email'
-          required
-        />
+          <Input
+            type='email'
+            {...register('email', { required: true })}
+            placeholder='Enter your email'
+            required
+          />
 
-        <TextArea
-          {...register('message', { required: true })}
-          placeholder='Enter your message'
-          required
-        />
+          <TextArea
+            {...register('message', { required: true })}
+            placeholder='Enter your message'
+            required
+          />
 
-        <SubmitButton ref={formRef} type='submit'>
-          Submit
-        </SubmitButton>
-      </Form>
+          <SubmitButton ref={formRef} type='submit'>
+            Submit
+          </SubmitButton>
+        </Form>
+      </FormWrapper>
     </Wrapper>
   );
 });

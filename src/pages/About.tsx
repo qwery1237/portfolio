@@ -155,32 +155,26 @@ const logoVariants = {
   },
 };
 const About = forwardRef<HTMLDivElement>((_, ref) => {
-  const photoRef = useRef<HTMLImageElement>(null);
-  const techsRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLDivElement>(null);
   const infoRef = useRef<HTMLDivElement>(null);
   const titleAnimation = useAnimation();
   const profileAnimation = useAnimation();
   const infoAnimation = useAnimation();
   useEffect(() => {
-    const currentPhotoRef = photoRef.current;
-    const currentTechsRef = techsRef.current;
+    const currentTitleRef = titleRef.current;
     const currentInfoRef = infoRef.current;
-    if (!currentPhotoRef || !currentTechsRef || !currentInfoRef) return;
+    if (!currentTitleRef || !currentInfoRef) return;
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.target === currentPhotoRef) {
+          if (entry.target === currentTitleRef) {
             if (entry.intersectionRatio >= 0.1) {
               titleAnimation.start('enter');
-              return;
-            }
-          }
-          if (entry.target === currentTechsRef) {
-            if (entry.intersectionRatio >= 0.1) {
               profileAnimation.start('enter');
               return;
             }
           }
+
           if (entry.target === currentInfoRef) {
             if (entry.intersectionRatio >= 0.1) {
               infoAnimation.start('enter');
@@ -191,12 +185,10 @@ const About = forwardRef<HTMLDivElement>((_, ref) => {
       },
       { threshold: [0.1] }
     );
-    observer.observe(currentPhotoRef);
-    observer.observe(currentTechsRef);
+    observer.observe(currentTitleRef);
     observer.observe(currentInfoRef);
     return () => {
-      observer.unobserve(currentPhotoRef);
-      observer.unobserve(currentTechsRef);
+      observer.unobserve(currentTitleRef);
       observer.unobserve(currentInfoRef);
     };
   }, []);
@@ -214,10 +206,9 @@ const About = forwardRef<HTMLDivElement>((_, ref) => {
         animate={titleAnimation}
         initial='initial'
       />
-      <ProfileWrapper>
+      <ProfileWrapper ref={titleRef}>
         <FirstLine>
           <Photo
-            ref={photoRef}
             src='profile.JPG'
             variants={photoVariants}
             animate={profileAnimation}
@@ -235,7 +226,7 @@ const About = forwardRef<HTMLDivElement>((_, ref) => {
               knowledge to create error-free and user-friendly solutions.
             </Intro>
 
-            <Techs ref={techsRef}>
+            <Techs>
               <Tech src='html.png' />
               <Tech src='css.png' />
               <Tech src='javascript.png' />
