@@ -1,8 +1,15 @@
 import { motion, useAnimation } from 'framer-motion';
 import { forwardRef, useEffect, useRef } from 'react';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import emailjs from 'emailjs-com';
 import styled from 'styled-components';
-
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+interface IFormData {
+  name: string;
+  email: string;
+  message: string;
+}
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -97,12 +104,41 @@ const formVariants = {
   },
 };
 const Contact = forwardRef<HTMLDivElement>((_, ref) => {
-  const { register } = useForm();
+  const { register, handleSubmit } = useForm<IFormData>();
 
   const titleRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLButtonElement>(null);
   const titleAnimation = useAnimation();
   const formAnimation = useAnimation();
+
+  const onSubmit: SubmitHandler<IFormData> = (data) => {
+    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const userId = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+    if (!serviceId || !templateId || !userId) {
+      toast.error(
+        'Email configuration is missing. Please check your environment variables.'
+      );
+      return;
+    }
+    emailjs
+      .send(
+        serviceId,
+        templateId,
+        {
+          from_name: data.name,
+          from_email: data.email,
+          message: data.message,
+        },
+        userId
+      )
+      .then(() => {
+        toast('Email sent successfully!');
+      })
+      .catch(() => {
+        toast('Failed to send email. Please try again later.');
+      });
+  };
   useEffect(() => {
     const currentWrapperRef = (ref as React.RefObject<HTMLDivElement>).current;
     const currentTitleRef = titleRef.current;
@@ -156,24 +192,26 @@ const Contact = forwardRef<HTMLDivElement>((_, ref) => {
         initial='initial'
       />
       <FormWrapper ref={titleRef}>
-        <Form variants={formVariants} animate={formAnimation} initial='initial'>
+        <Form
+          variants={formVariants}
+          animate={formAnimation}
+          initial='initial'
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <Input
             {...register('name', { required: true })}
             placeholder='Enter your name'
-            required
           />
 
           <Input
             type='email'
             {...register('email', { required: true })}
             placeholder='Enter your email'
-            required
           />
 
           <TextArea
             {...register('message', { required: true })}
             placeholder='Enter your message'
-            required
           />
 
           <SubmitButton ref={formRef} type='submit'>
@@ -181,6 +219,7 @@ const Contact = forwardRef<HTMLDivElement>((_, ref) => {
           </SubmitButton>
         </Form>
       </FormWrapper>
+      <ToastContainer />
     </Wrapper>
   );
 });
