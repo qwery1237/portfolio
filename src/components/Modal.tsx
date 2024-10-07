@@ -9,6 +9,7 @@ interface IModal {
   tag: string;
   detail: string;
   maxIndex: number;
+  links: string[];
 }
 interface IModalProps {
   crrModal: number;
@@ -26,6 +27,10 @@ const MODALS: IModal[] = [
     detail:
       '   This project was created to improve my HTML and CSS skills by replicating the design of a well-known app. The goal was to focus on recreating the user interface, understanding layout techniques, and enhancing my design accuracy and attention to detail.',
     maxIndex: 6,
+    links: [
+      'https://earnest-licorice-3a1b49.netlify.app/',
+      'https://github.com/qwery1237/kokoa-clone-2021',
+    ],
   },
   {
     title: 'Code Crack',
@@ -33,6 +38,10 @@ const MODALS: IModal[] = [
     detail:
       ' Code Crack is a coding quiz app designed to improve my skills in React and API integration. Using Axios to fetch quiz challenges from an API, the app allows users to solve coding quizzes, review detailed explanations for each question, and track their score. This project helped me practice data fetching, state management, and creating a seamless user experience.',
     maxIndex: 5,
+    links: [
+      'https://jinsquizapp.netlify.app/',
+      'https://github.com/qwery1237/Quiz-App---React',
+    ],
   },
   {
     title: 'Fuel Go',
@@ -40,6 +49,11 @@ const MODALS: IModal[] = [
     detail:
       'Fuel Go is an app designed to help users find nearby gas stations based on their location, displaying results in both map and list formats. This project was a collaborative effort with a friend from school, where our main goals were to build a responsive web design, create a user-friendly interface, and ensure the app was error-free. Through this project, I gained experience in collaborating via GitHub, connecting backend APIs with the frontend, building a responsive and convenient UI, and troubleshooting issues during development.',
     maxIndex: 10,
+    links: [
+      'https://cstp-2204-jin-harinder.netlify.app/',
+      'https://github.com/qwery1237/CSTP-2204-Client',
+      'https://www.figma.com/community/file/1425250046832718731',
+    ],
   },
   {
     title: 'Quick List',
@@ -47,6 +61,10 @@ const MODALS: IModal[] = [
     detail:
       '    Quick List is a to-do app built to improve my proficiency with TypeScript while also learning new React libraries. I used React Hook Form to simplify form state management, implemented drag-and-drop functionality using hello-pangea/dnd, and managed global state efficiently with Recoil. This project helped me become more familiar with TypeScript and advanced React concepts.',
     maxIndex: 3,
+    links: [
+      'https://qwery1237.github.io/react-tsx-todo/',
+      'https://github.com/qwery1237/react-tsx-todo',
+    ],
   },
   {
     title: 'Flix Spot',
@@ -54,6 +72,10 @@ const MODALS: IModal[] = [
     detail:
       'Flix Spot is a Netflix-inspired project designed to help me get more comfortable with TypeScript and explore animations. I chose Netflix due to its elegant animations and UI, which I aimed to replicate. I built several core features, including the homepage, movie page, TV show page, search page, and detail modal. To implement these, I used Framer Motion for smooth animations and Styled Components for styling.',
     maxIndex: 7,
+    links: [
+      'https://qwery1237.github.io/react-tsx-netflix-clone/',
+      'https://github.com/qwery1237/react-tsx-netflix-clone',
+    ],
   },
 ];
 const Wrapper = styled(motion.div)`
@@ -304,14 +326,19 @@ export default function Modal({
               <AppTag>{modal.tag}</AppTag>
               <AppDetail>{modal.detail}</AppDetail>
               <Links>
-                <Visit>
+                <Visit href={modal.links[0]} target='_blank'>
                   <FiExternalLink />
                   Visit Site
                 </Visit>
-                <Visit>
+                <Visit href={modal.links[1]} target='_blank'>
                   <FiExternalLink />
                   Visit Github
                 </Visit>
+                {modal.links[2] && (
+                  <Visit href={modal.links[2]} target='_blank'>
+                    Visit Figma
+                  </Visit>
+                )}
               </Links>
               <CloseBtn onClick={() => setShowModal(false)} />
             </ModalWrapper>

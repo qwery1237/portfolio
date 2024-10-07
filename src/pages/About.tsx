@@ -30,7 +30,7 @@ const FirstLine = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 80px;
+  gap: 160px;
 
   @media (max-width: 780px) {
     flex-direction: column;
