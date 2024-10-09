@@ -5,7 +5,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-     "predeploy": "yarn build",
+    "predeploy": "yarn build",
     "deploy": "gh-pages -d dist",
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "emailjs-com": "^3.2.0",
-    "framer-motion": "^11.5.4",
+    "framer-motion": "^11.11.7",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.53.0",

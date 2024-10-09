@@ -31,7 +31,7 @@ const Icon = styled(motion.a)`
     background-color: ${(props) => props.theme.red};
   }
 `;
-const IconWrapper = styled(motion.div)`
+const IconWrapper = styled(motion.a)`
   position: absolute;
   width: 55px;
   height: 55px;
@@ -67,6 +67,8 @@ export default function Footer() {
       <Links>
         <Icon onMouseEnter={() => onHover(0)} onMouseLeave={() => hoverEnd(0)}>
           <IconWrapper
+            href='https://github.com/qwery1237'
+            target='_blank'
             variants={iconVariants}
             animate={iconAnimations[0]}
             initial='initial'
@@ -76,6 +78,8 @@ export default function Footer() {
         </Icon>
         <Icon onMouseEnter={() => onHover(1)} onMouseLeave={() => hoverEnd(1)}>
           <IconWrapper
+            href='https://www.linkedin.com/in/jinsooson/'
+            target='_blank'
             variants={iconVariants}
             animate={iconAnimations[1]}
             initial='initial'

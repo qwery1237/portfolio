@@ -7,6 +7,7 @@ import {
 import { forwardRef, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import Modal from '../components/Modal';
+import { isMobileDevice } from '../utils';
 interface IProject {
   src: string;
   name: string;
@@ -259,6 +260,7 @@ const Project = forwardRef<HTMLDivElement>((_, ref) => {
   const [shouldAnimate, setShouldAnimate] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [crrModal, setCrrModal] = useState(0);
+  const isMobile = isMobileDevice();
 
   const titleRef = useRef<HTMLDivElement>(null);
   const projectRef = useRef<HTMLDivElement>(null);
@@ -452,6 +454,7 @@ const Project = forwardRef<HTMLDivElement>((_, ref) => {
                         });
                         cardAnimations[i].start('hover');
                       }}
+                      onClick={() => isMobile && openModal(i)}
                       initial='initial'
                       transition={{ duration: 0.45, type: 'tween' }}
                     />
