@@ -557,7 +557,7 @@ Error generating stack: `+s.message+`
   &:hover {
     background-color: ${e=>e.theme.red};
   }
-`,Sm=F(ae.div)`
+`,Sm=F(ae.a)`
   position: absolute;
   width: 55px;
   height: 55px;
@@ -568,7 +568,7 @@ Error generating stack: `+s.message+`
   display: flex;
 `,dE=F.div``,hE=F.div`
   color: ${e=>e.theme.blue};
-`,Cm={initial:{y:0,opacity:1},hover:{y:[0,40,-40,0],opacity:[1,0,0,1],transition:{y:{times:[0,.5,.5,1]},opacity:{times:[0,.3,.85,1]}}}};function pE(){const e=[Ne(),Ne()],t=r=>e[r].start("hover"),n=r=>e[r].start("initial");return A.jsxs(uE,{children:[A.jsxs(cE,{children:[A.jsx(xm,{onMouseEnter:()=>t(0),onMouseLeave:()=>n(0),children:A.jsx(Sm,{variants:Cm,animate:e[0],initial:"initial",children:A.jsx(aE,{})})}),A.jsx(xm,{onMouseEnter:()=>t(1),onMouseLeave:()=>n(1),children:A.jsx(Sm,{variants:Cm,animate:e[1],initial:"initial",children:A.jsx(lE,{})})})]}),A.jsxs(fE,{children:[A.jsx(dE,{children:"Jinsoo Son"})," ",A.jsx(hE,{children:"©2024"})]})]})}function mE(){const e=_.useRef(null),t=_.useRef(null),n=_.useRef(null),r=_.useRef(null);return A.jsxs(A.Fragment,{children:[A.jsx(c6,{landingRef:e,aboutRef:t,projectRef:n,contactRef:r}),A.jsx(y6,{ref:e,aboutRef:t}),A.jsx(ok,{ref:t}),A.jsx(oE,{ref:n}),A.jsx(t6,{ref:r}),A.jsx(pE,{})]})}const gE={blue:"#18ACBA",red:"#F76566",black:"#444649"},yE=HC`
+`,Cm={initial:{y:0,opacity:1},hover:{y:[0,40,-40,0],opacity:[1,0,0,1],transition:{y:{times:[0,.5,.5,1]},opacity:{times:[0,.3,.85,1]}}}};function pE(){const e=[Ne(),Ne()],t=r=>e[r].start("hover"),n=r=>e[r].start("initial");return A.jsxs(uE,{children:[A.jsxs(cE,{children:[A.jsx(xm,{onMouseEnter:()=>t(0),onMouseLeave:()=>n(0),children:A.jsx(Sm,{href:"https://github.com/qwery1237",target:"_blank",variants:Cm,animate:e[0],initial:"initial",children:A.jsx(aE,{})})}),A.jsx(xm,{onMouseEnter:()=>t(1),onMouseLeave:()=>n(1),children:A.jsx(Sm,{href:"https://www.linkedin.com/in/jinsooson/",target:"_blank",variants:Cm,animate:e[1],initial:"initial",children:A.jsx(lE,{})})})]}),A.jsxs(fE,{children:[A.jsx(dE,{children:"Jinsoo Son"})," ",A.jsx(hE,{children:"©2024"})]})]})}function mE(){const e=_.useRef(null),t=_.useRef(null),n=_.useRef(null),r=_.useRef(null);return A.jsxs(A.Fragment,{children:[A.jsx(c6,{landingRef:e,aboutRef:t,projectRef:n,contactRef:r}),A.jsx(y6,{ref:e,aboutRef:t}),A.jsx(ok,{ref:t}),A.jsx(oE,{ref:n}),A.jsx(t6,{ref:r}),A.jsx(pE,{})]})}const gE={blue:"#18ACBA",red:"#F76566",black:"#444649"},yE=HC`
   * {
     margin: 0;
     padding: 0;
