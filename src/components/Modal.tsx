@@ -48,7 +48,7 @@ const MODALS: IModal[] = [
     tag: 'Gas Station Finder & Review App',
     detail:
       'Fuel Go is an app designed to help users find nearby gas stations based on their location, displaying results in both map and list formats. This project was a collaborative effort with a friend from school, where our main goals were to build a responsive web design, create a user-friendly interface, and ensure the app was error-free. Through this project, I gained experience in collaborating via GitHub, connecting backend APIs with the frontend, building a responsive and convenient UI, and troubleshooting issues during development.',
-    maxIndex: 10,
+    maxIndex: 11,
     links: [
       'https://cstp-2204-jin-harinder.netlify.app/',
       'https://github.com/qwery1237/CSTP-2204-Client',
