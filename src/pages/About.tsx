@@ -217,7 +217,7 @@ const About = forwardRef<HTMLDivElement>((_, ref) => {
       <ProfileWrapper ref={titleRef}>
         <FirstLine>
           <Photo
-            src='profile.JPG'
+            src='profile.jpeg'
             variants={photoVariants}
             animate={titleAnimation}
             initial='initial'
